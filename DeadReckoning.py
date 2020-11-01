@@ -36,9 +36,9 @@ wheelbase = 0.5
 def aiA(channel):
   global counter1
   if GPIO.input(dt1):
-    counter1 -=1
+    counter1 +=1
   else:
-    counter1 += 1
+    counter1 -= 1
 
 def aiB(channel):
   global counter2
