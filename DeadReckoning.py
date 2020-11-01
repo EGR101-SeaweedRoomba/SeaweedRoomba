@@ -29,7 +29,7 @@ theta=0
 
 # constants defined by the robot (metric units)
 radius = 0.622
-gearratio = 6
+gearratio = 1
 wheelbase = 0.5 
 
 
@@ -53,7 +53,7 @@ GPIO.add_event_detect(clk2, GPIO.RISING, callback=aiB)
 while(True):
   current_time = time.time()
   deltat = current_time - time0
-  if(deltat > 1 ):
+  if(deltat > 0.1 ):
       encodervals[0][0] = encodervals[0][1]
       encodervals[1][0] = encodervals[1][1]  
       encodervals[0][1] = counter1
