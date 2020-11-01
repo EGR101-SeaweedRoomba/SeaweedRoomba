@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from time import sleep
+import time
 
 # GPIO pins for encoder 1
 
@@ -7,10 +7,10 @@ clk1 = 27
 dt1 = 4
 
 # assigned GPIO pins for second encoder
-
 clk2 = 26
 dt2 = 6
 
+gearRatio = 6.0;
 radius = 0.622 # wheel radius in meters
 
 GPIO.setmode(GPIO.BCM) # broadcom pinout as opposed to board
@@ -58,7 +58,10 @@ def aiB(channel):
 GPIO.add_event_detect(clk1, GPIO.RISING, callback=aiA)
 GPIO.add_event_detect(clk2, GPIO.RISING, callback=aiB)
 
+
 # basically just an infinite loop
+
+
 
 While(True):
        vals1=vals1[1:]+[counter1]
@@ -66,4 +69,4 @@ While(True):
 
        vel1 = sum(vals1)/len(vals1)
        vel2 = sum(vals2)/len(vals2)
-
+       
