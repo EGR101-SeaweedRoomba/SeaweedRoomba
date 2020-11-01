@@ -28,9 +28,9 @@ y=0
 theta=0
 
 # constants defined by the robot (metric units)
-radius = 0.622
+radius = 1
 gearratio = 1
-wheelbase = 0.5 
+wheelbase = 1
 
 
 def aiA(channel):
