@@ -21,28 +21,28 @@ counter1=0
 counter2=0
 
 def aiA(channel):
-       global counter1
-       if GPIO.input(dt1):
+      global counter1
+      if GPIO.input(dt1):
                 counter1 -=1
-       else:
+      else:
                 counter1 += 1
-       return(counter1)
+      return(counter1)
 
 def aiB(channel):
-       global counter2
-       if GPIO.input(dt2):
+      global counter2
+      if GPIO.input(dt2):
                 counter2 -=1
-       else:
+      else:
                 counter2 +=1
-        return(counter2)
+      return(counter2)
 
 GPIO.add_event_detect(clk1, GPIO.RISING, callback=aiA)
 GPIO.add_event_detect(clk2, GPIO.RISING, callback=aiB)
 
 try:
-       GPIO.wait_for_edge(24, GPIO.RISING)
+      GPIO.wait_for_edge(24, GPIO.RISING)
 except:
-       GPIO.cleanup()
+      GPIO.cleanup()
 
 
 def getCounterValues():
