@@ -57,7 +57,7 @@ while(True):
       encodervals[0][0] = encodervals[0][1]
       encodervals[1][0] = encodervals[1][1]  
       encodervals[0][1] = counter1
-      econdervals[1][1] = counter2         
+      encondervals[1][1] = counter2         
 
       # linear velocities of each wheel
 
