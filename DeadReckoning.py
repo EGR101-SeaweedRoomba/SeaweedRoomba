@@ -76,7 +76,7 @@ while(True):
       k12 = vr
 
       k20 = vl * math.cos(theta + deltat*k12/2)
-      k21 = vl* math.sin(theta + delta*k12/2)
+      k21 = vl* math.sin(theta + deltat*k12/2)
       k22 = vr
 
       k30 = vl * math.cos(theta + deltat*k22) 
