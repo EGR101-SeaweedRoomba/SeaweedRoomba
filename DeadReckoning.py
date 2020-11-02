@@ -90,5 +90,5 @@ while(True):
       theta += (deltat/6)*(k02 + 2*(k12+k22) + k32)
       time0 = current_time
 
-      print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta))
+      print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta*360/(2*math.pi)))
         
