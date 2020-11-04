@@ -86,7 +86,7 @@ while(True):
       
       
       x += (deltat)/6 * (k00+2*(k10+k20)+k30)
-      y += (deltat/6)*(k00+2*(k11+k21)+k31)
+      y += (deltat/6)*(k01+2*(k11+k21)+k31)
       theta += (deltat/6)*(k02 + 2*(k12+k22) + k32)
       time0 = current_time
 
