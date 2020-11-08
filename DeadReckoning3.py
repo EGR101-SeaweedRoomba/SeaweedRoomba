@@ -58,7 +58,7 @@ def aiA(channel):
         counter1 -= 1
 
     if (abs(counter1-old1)>=4):
-        accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        accel = math.sqrt(sum(val**2 for val in sensor.linear_acceleration))
         print("Accel 1: " + str(accel))
         if accel > 0.1:
             vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
@@ -81,7 +81,7 @@ def aiB(channel):
         counter2 -= 1
 
     if (abs(counter2-old2)>=4):
-        accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        accel = math.sqrt(sum(val**2 for val in sensor.linear_acceleration))
         #print("Accel 2: " + str(accel))
         if accel > 0.1:
             vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
