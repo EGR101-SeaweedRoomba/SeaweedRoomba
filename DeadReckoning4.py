@@ -36,7 +36,7 @@ y=0
 magX = sensor.magnetic[0]
 magY = sensor.magnetic[1] 
 theta= math.atan2(magY,magX) * 180/math.pi
-
+print("Initial theta: " + str(theta))
 # constants defined by the robot (metric units)
 radius = 1
 gearratio = 1
@@ -121,11 +121,11 @@ def calculate():
 
     x += (dx1+dx2)/2
     y += (dy2 + dy2)/2
-    
+    theta += dtheta1
     time0 = time.time()
 
 #    print(str(vel1) + "   " + str(vel2))
-    print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta*360/(2*math.pi)))
+    print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta))
 
 GPIO.add_event_detect(clk1, GPIO.RISING, callback=aiA)
 GPIO.add_event_detect(clk2, GPIO.RISING, callback=aiB)
