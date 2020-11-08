@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 import math
+import board
+import busio
+import adafruit_bno055
 
 clk1 = 27
 dt1 = 4
@@ -15,6 +18,8 @@ GPIO.setup(dt1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(clk2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(dt2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_bno055.BNO055_I2C(i2c)
 
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -53,7 +58,8 @@ def aiA(channel):
         counter1 -= 1
 
     if (abs(counter1-old1)>=4):
-        if (time.time()-oldtime1)<0.2:
+        accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        if accel > 0.01:
             vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
         else:
             vel1 = 0
@@ -74,7 +80,8 @@ def aiB(channel):
         counter2 -= 1
 
     if (abs(counter2-old2)>=4):
-        if (time.time()-oldtime2)<0.2:
+        accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        if accel > 0.01:
             vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
         else:
             vel1=0
