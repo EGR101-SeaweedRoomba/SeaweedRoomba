@@ -53,7 +53,10 @@ def aiA(channel):
         counter1 -= 1
 
     if (abs(counter1-old1)>=4):
-        vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
+        if (time.time()-oldtime1)<0.2:
+            vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
+        else:
+            vel1 = 0
         calculate()
         old1=counter1
         oldtime1=time.time()
@@ -70,7 +73,10 @@ def aiB(channel):
         counter2 -= 1
 
     if (abs(counter2-old2)>=4):
-        vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
+        if (time.time()-oldtime2)<0.2:
+            vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
+        else:
+            vel2=0
         calculate()
         old2=counter2	
         oldtime2=time.time()
