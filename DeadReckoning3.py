@@ -59,6 +59,7 @@ def aiA(channel):
 
     if (abs(counter1-old1)>=4):
         accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        print("Accel 1: " + str(accel))
         if accel > 0.1:
             vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
         else:
@@ -81,6 +82,7 @@ def aiB(channel):
 
     if (abs(counter2-old2)>=4):
         accel = math.sqrt(sum(val**2 for val in sensor.acceleration))
+        #print("Accel 2: " + str(accel))
         if accel > 0.1:
             vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
         else:
@@ -127,7 +129,7 @@ def calculate():
     time0 = time.time()
 
 #    print(str(vel1) + "   " + str(vel2))
-    print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta*360/(2*math.pi)))
+    #print("X: " + str(x) + "\nY: " + str(y) + "\nTheta: " + str(theta*360/(2*math.pi)))
 
 GPIO.add_event_detect(clk1, GPIO.RISING, callback=aiA)
 GPIO.add_event_detect(clk2, GPIO.RISING, callback=aiB)
