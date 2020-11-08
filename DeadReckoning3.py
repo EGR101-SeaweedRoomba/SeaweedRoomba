@@ -46,6 +46,10 @@ vel2=0
 
 time0=time.time()
 
+
+accel=[0]*5
+
+
 def aiA(channel):
     global counter1
     global old1
@@ -58,9 +62,9 @@ def aiA(channel):
         counter1 -= 1
 
     if (abs(counter1-old1)>=4):
-        accel = math.sqrt(sum(val**2 for val in sensor.linear_acceleration))
-        print("Accel 1: " + str(accel))
-        if accel > 0.1:
+        accel = accel[1:end] + math.sqrt(sum((0 if val == None else val **2) for val in sensor.linear_acceleration[0:1]))
+        print("Accel 1: " + str(sum(accel)/len(accel)))
+        if sum(accel)/len(accel) > 0.1:
             vel1 = round(radius*2*math.pi/600*(counter1-old1)/(time.time()-oldtime1)/gearratio,2)
         else:
             vel1 = 0
@@ -81,9 +85,9 @@ def aiB(channel):
         counter2 -= 1
 
     if (abs(counter2-old2)>=4):
-        accel = math.sqrt(sum(val**2 for val in sensor.linear_acceleration))
-        #print("Accel 2: " + str(accel))
-        if accel > 0.1:
+        accel = accel[1:end] + math.sqrt(sum((0 if val == None else val **2) for val in sensor.linear_acceleration[0:1]))
+        print("Accel 2: " + str(sum(accel)/len(accel)))
+        if sum(accel)/len(accel) > 0.1:
             vel2 = round(radius*2*math.pi/600*(counter2-old2)/(time.time()-oldtime2)/gearratio,2)
         else:
             vel1=0
