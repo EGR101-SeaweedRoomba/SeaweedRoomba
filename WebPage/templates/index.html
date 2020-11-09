@@ -61,17 +61,14 @@
 
         // Add server sent event handlers.
         server.onmessage = function(e) {
-          console.log("GOD HELP US");
           updateData(JSON.parse(e.data));
         };
         server.onopen = function(e) {
-          console.log("AAAAAA");
           // Hide connecting status and show controls when connection is made.
 	        $('#connecting').hide();
           $('#readout').show();
         };
         server.onerror = function(e) {
-          console.log(e);
           // Hide controls and show connecting status if connection closes.
           $('#readout').hide();
           $('#connecting').show();

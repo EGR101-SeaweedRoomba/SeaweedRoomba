@@ -32,8 +32,6 @@ import threading
 import time
 import random
 
-import board
-import busio
 import flask
 
 # How often to update the BNO sensor data (in hertz).
@@ -56,11 +54,7 @@ changed = threading.Condition()
 thread = None
 
 def read():
-    with changed:
-        data["value"] = random.random()
-        changed.notifyAll()
-    time.sleep(1/UPDATE_FREQUENCY_HZ)
-
+    data["value"] = random.random()
 def sse():
     """Function to handle sending sensor data to the client web browser
     using HTML5 server sent events (aka server push).  This is a generator function
@@ -71,32 +65,34 @@ def sse():
     # the client.  Since this is a generator function the yield statement is
     # used to return a new result.
     while True:
-        with changed:
-            changed.wait()
+        read()
         yield "data: {0}\n\n".format(json.dumps(data))
+        time.sleep(1/UPDATE_FREQUENCY_HZ)
 
 
-@app.before_first_request
-def start_thread():
-    # Start the BNO thread right before the first request is served.  This is
-    # necessary because in debug mode flask will start multiple main threads so
-    # this is the only spot to put code that can only run once after starting.
-    # See this SO question for more context:
-    #   http://stackoverflow.com/questions/24617795/starting-thread-while-running-flask-with-debug
-    global thread  # pylint: disable=global-statement
-    # Kick off BNO055 reading thread.
-    thread = threading.Thread(target=read)
-    thread.daemon = True  # Don't let the BNO reading thread block exiting.
-    thread.start()
+# @app.before_first_request
+# def start_thread():
+#     # Start the BNO thread right before the first request is served.  This is
+#     # necessary because in debug mode flask will start multiple main threads so
+#     # this is the only spot to put code that can only run once after starting.
+#     # See this SO question for more context:
+#     #   http://stackoverflow.com/questions/24617795/starting-thread-while-running-flask-with-debug
+#     global thread  # pylint: disable=global-statement
+#     # Kick off BNO055 reading thread.
+#     thread = threading.Thread(target=read)
+#     thread.daemon = True  # Don't let the BNO reading thread block exiting.
+#     thread.start()
 
 @app.route("/val")
 def path():
     # Return SSE response and call sse function to stream sensor data to
     # the webpage.
+    print("sending data....")
     return flask.Response(sse(), mimetype="text/event-stream")
 
 @app.route("/")
 def root():
+    print("starting website!")
     return flask.render_template("index.html")
 
 
