@@ -113,11 +113,11 @@ def calculate():
 
     dx1 = (deltat)/6 * (k00+2*(k10+k20)+k30)
     dy1 = (deltat/6)*(k01+2*(k11+k21)+k31)
-    dtheta1 = (deltsat/6)*(k02 + 2*(k12+k22) + k32)
+    dtheta1 = (deltat/6)*(k02 + 2*(k12+k22) + k32)
 
     acceleration = sensor.acceleration
-    dx2 = acceleration[0]*dt*dt*0.5
-    dy2 = acceleration[1]*0.5*dt*dt
+    dx2 = 0.5*acceleration[0]*deltat**2
+    dy2 = 0.5*acceleration[1]*deltat**2
 
     x += (dx1+dx2)/2
     y += (dy2 + dy2)/2
