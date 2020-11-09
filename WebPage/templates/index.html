@@ -30,7 +30,10 @@
         </div>
         <div class="row" id="readout">
           <div class="col-sm-4">
-            <h4>Value = <span id="value">0</span></h4>
+            <h4>X Position = <span id="x">0</span></h4>
+            <h4>Y Position = <span id="y">0</span></h4>
+            <h4>Theta = <span id="theta">0</span></h4>
+
           </div>
         </div>
       </div>
@@ -40,20 +43,11 @@
 
       <script>
       $(document).ready(function() {
-        // Configuration
-        // Set size of the WebGL renderer scene.
-        var sceneWidth = 640;
-        var sceneHeight = 480;
-        // Define list of 3D models.  Each item should have a name property that
-        // will be rendered in the drop down, and a load function that is called
-        // with the model instance and should add a model property with a Three.js
-        // scene graph object that will be rendered.
-
-        // Start with main controls hidden until connected.
-
         // Function called when a new sensor reading is received.
         function updateData(data) {
-          $('#value').text(data.value);
+          $('#x').text(data.x);
+          $('#y').text(data.y);
+          $('#theta').text(data.theta);
         }
 
         // Create server sent event connection to receive sensor data.
@@ -69,6 +63,7 @@
           $('#readout').show();
         };
         server.onerror = function(e) {
+          console.log(e)
           // Hide controls and show connecting status if connection closes.
           $('#readout').hide();
           $('#connecting').show();
