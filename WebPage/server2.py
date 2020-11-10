@@ -1,3 +1,4 @@
+
 import json
 import threading
 import time
@@ -27,9 +28,9 @@ x=0
 y=0
 theta=0
 
-wheelbase =1
-radius =1
-gearratio =1
+wheelbase = 0.47
+radius = 0.0889
+gearratio =44/92
 
 counters = {
     "c1":0,
