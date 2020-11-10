@@ -33,23 +33,40 @@
             <h4>X Position = <span id="x">0</span></h4>
             <h4>Y Position = <span id="y">0</span></h4>
             <h4>Theta = <span id="theta">0</span></h4>
-	    <h4>Distance = <span id="distance">0</span></h4>
-
+	          <h4>Distance = <span id="distance">0</span></h4>
           </div>
+          <div id="myDiv"></div>
         </div>
       </div>
       <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/three.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
       <script>
+      
+      var positions = {
+          x: [],
+          y: [],
+          mode: 'markers',
+          type: 'scatter'
+        };
 
       $(document).ready(function() {
         // Function called when a new sensor reading is received.
+      
         function updateData(data) {
           $('#x').text(data.x);
           $('#y').text(data.y);
           $('#theta').text(data.theta);
-	  $('#distance').text(Math.pow(Math.pow(data.x, 2) + Math.pow(data.y, 2),0.5))
+	       $('#distance').text(Math.pow(Math.pow(data.x, 2) + Math.pow(data.y, 2),0.5));
+          
+         var trace = {
+           x:data.x,
+           y:data.y,
+           type:'scatter',
+           mode:'markers'
+         };
+
         }
 
         // Create server sent event connection to receive sensor data.
@@ -57,7 +74,7 @@
 
         // Add server sent event handlers.
         server.onmessage = function(e) {
-          updateData(JSON.parse(e.data));
+          updateData(JSON.parse(e.data))
         };
         server.onopen = function(e) {
           // Hide connecting status and show controls when connection is made.
@@ -70,6 +87,7 @@
           $('#readout').hide();
           $('#connecting').show();
         };
+
       });
 
       </script>

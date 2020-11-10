@@ -18,9 +18,6 @@ GPIO.setup(dt2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-counter1=0
-counter2=0
-
 interval=0.1
 
 x=0
@@ -36,7 +33,6 @@ counters = {
     "c1_":0,
     "c2":0,
     "c2_":0,
-
 }
 
 def aiA(channel):
