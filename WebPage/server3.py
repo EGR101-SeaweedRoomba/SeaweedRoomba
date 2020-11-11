@@ -35,7 +35,7 @@ x=0
 y=0
 magX = sensor.magnetic[0]
 magY = sensor.magnetic[1] 
-theta= math.atan2(magY,magX)
+theta= 90 - math.atan2(magY/magX)
 
 wheelbase = 0.47
 radius = 0.0889

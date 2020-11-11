@@ -25,8 +25,7 @@ interval=0.1
 
 x=0
 y=0
-theta=0
-
+theta = 0
 wheelbase = 0.47
 radius = 0.0889
 gearratio =44/92
