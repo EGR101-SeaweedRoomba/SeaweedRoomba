@@ -99,10 +99,9 @@ def calculate(vel1, vel2):
     accel = sensor.linear_acceleration
     orient = sensor.euler
 
-    dx2 = ACCEL_POS_TRANSITION*accel[0]
-    dy2 = ACCEL_POS_TRANSITION*accel[1]
+    dx2 = ACCEL_POS_TRANSITION*(accel[0] if accel[0] !=None else 0)
+    dy2 = ACCEL_POS_TRANSITION*(accel[1] if accel[1] !=None else 0)
 
-    headingVel = ACCEL_VEL_TRANSITION * accel[0]/ math.cos(DEG_2_RAD * orient[0] )
 
     x = (dx1+dx2)/2
     y = (dy1 + dy2)/2
