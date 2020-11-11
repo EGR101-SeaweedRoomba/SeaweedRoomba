@@ -105,7 +105,7 @@ def calculate(vel1, vel2):
 
     x = (dx1+dx2)/2
     y = (dy1 + dy2)/2
-    theta = orient[0]
+    theta = (orient[0] if accel[0] != None else 0)
     data['x']=x
     data['y']=y
     data['theta']=theta
