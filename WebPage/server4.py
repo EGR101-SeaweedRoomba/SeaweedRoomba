@@ -96,10 +96,11 @@ def calculate(vel1, vel2):
     accel = sensor.linear_acceleration
     orient = sensor.euler
 
-    x += ACCEL_POS_TRANSITION*accel[0]
-    y += ACCEL_POS_TRANSITION*accel[1]
 
-    headingVel = ACCEL_VEL_TRANSITION * accel[0]/ math.cos(DEG_2_RAD * orient[0] )
+    x += ACCEL_POS_TRANSITION*(accel[0] if accel[0] !=None else 0)
+    y += ACCEL_POS_TRANSITION*(accel[1] if accel[1] !=None else 0)
+
+    headingVel = ACCEL_VEL_TRANSITION * (accel[0] if accel[0] !=None else 0)/ math.cos(DEG_2_RAD * orient[0] )
 
     theta = orient[0]
     data['x']=x
