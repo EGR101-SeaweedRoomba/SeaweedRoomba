@@ -93,7 +93,7 @@ def calculate(vel1, vel2):
 
 
 
-    ACCEL_VEL_TRANSITION =  (double)(10) / 1000.0;
+    ACCEL_VEL_TRANSITION =  (10) / 1000.0;
     ACCEL_POS_TRANSITION = 0.5 * ACCEL_VEL_TRANSITION * ACCEL_VEL_TRANSITION;
     DEG_2_RAD = 0.01745329251;
     accel = sensor.linear_acceleration
@@ -102,7 +102,7 @@ def calculate(vel1, vel2):
     dx2 = ACCEL_POS_TRANSITION*accel[0]
     dy2 = ACCEL_POS_TRANSITION*accel[1]
 
-    headingVel = ACCEL_VEL_TRANSITION * accel[0]/ Math.cos(DEG_2_RAD * orient[0] )
+    headingVel = ACCEL_VEL_TRANSITION * accel[0]/ math.cos(DEG_2_RAD * orient[0] )
 
     x = (dx1+dx2)/2
     y = (dy1 + dy2)/2
