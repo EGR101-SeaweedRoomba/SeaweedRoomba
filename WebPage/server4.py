@@ -100,9 +100,9 @@ def calculate(vel1, vel2):
     x += ACCEL_POS_TRANSITION*(accel[0] if accel[0] !=None else 0)
     y += ACCEL_POS_TRANSITION*(accel[1] if accel[1] !=None else 0)
 
-    headingVel = ACCEL_VEL_TRANSITION * (accel[0] if accel[0] !=None else 0)/ math.cos(DEG_2_RAD * (orient[0] if accel[0] != None else 0)
+    headingVel = ACCEL_VEL_TRANSITION * (accel[0] if accel[0] !=None else 0)/ math.cos(DEG_2_RAD * (orient[0] if orient[0] != None else 0))
 
-    theta = orient[0]
+    theta = orient[0] if orient[0] != None else 0)
     data['x']=x
     data['y']=y
     data['theta']=theta
