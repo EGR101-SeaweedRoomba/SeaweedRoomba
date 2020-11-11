@@ -124,7 +124,6 @@ def path():
 
 @app.route("/")
 def root():
-    print("starting website!")
     return flask.render_template("index.html")
 
 
