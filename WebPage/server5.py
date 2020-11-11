@@ -1,3 +1,6 @@
+import RPi.GPIO as GPIO
+import time
+import math
 import board
 import busio
 import adafruit_bno055
@@ -25,10 +28,7 @@ interval=0.1
 
 x=0
 y=0
-magX = sensor.magnetic[0]
-magY = sensor.magnetic[1] 
-theta= math.atan2(magY,magX) * 180/math.pi
-
+theta = 0
 
 wheelbase = 0.47
 radius = 0.0889
