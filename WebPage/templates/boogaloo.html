@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/design.css') }}">
+        <script src="jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="{{url_for('static', filename='getData.js')}}"></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Encoder Test Site</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    </head>
+    <body>
+      <div id="div1">
+        <div class="row" id="readout">
+          <div class="col-sm-4">
+            <h4>X Position = <span id="x">0</span></h4>
+            <h4>Y Position = <span id="y">0</span></h4>
+            <h4>Theta = <span id="theta">0</span></h4>
+	          <h4>Distance = <span id="distance">0</span></h4>
+          </div>
+          <div class="col-sm-4">
+              <button type="button" class="btn btn-primary" id="reset">Reset</button>
+          </div>
+        </div>
+      </div>
+      <div id="div2">
+        <center> Yaw </center>
+        <div style = "position:relative; left:230px; top:2px;">
+          <svg width="300px" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" fill="firebrick"></circle>
+            <line id="line" x1="20" y1="100" x2="100" y2="100" stroke-width="2" stroke="black"></line>
+          </svg>
+          <script>
+            var rotateJump = 10;
+            var line = document.getElementById("line");
+  
+            var i = 0;
+          setInterval(function() {
+            i = getData();
+              line.setAttribute("transform", "rotate(" + i + ", 100, 100)");
+            }, 25);
+          </script>
+        </div>
+      </div>
+      <div id="div3">
+        <script>createnew(); </script>
+      </div>
+      <div id="div4">
+        <script>
+            function smth(str) {
+              return document.body.appendChild(document.createTextNode(str));
+            }
+        </script>
+      </div>
+      <div id='myDiv'></div>
+
+      
+      <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+      <script>
+      
+      function createnew() {
+
+        var positions = {
+            x: [],
+            y: [],
+            type: 'scatter'
+          };
+        var layout = {
+          width: 500,
+          height: 500,
+          'xaxis.range': [-0.1, 0.1],
+          'yaxis.range': [-0.1, 0.1],
+        };
+
+        thingtoplot= [positions]
+
+        Plotly.newPlot('myDiv', thingtoplot, layout);
+
+      }
+
+      var minx = 0;
+      var maxx = 0;
+      var miny = 0;
+      var maxy = 0;
+
+      prevx = 0;
+      prevy = 0;
+      prevt = 0;
+      
+      xfac=0;
+      yfac=0;
+      tfac=0;
+
+      var myDiv = document.getElementById('myDiv')
+
+      $(document).ready(function() {
+        // Function called when a new sensor reading is received.
+      
+        function updateData(data) {
+          //console.log(data.x);
+          $('#x').text(data.x-xfac);
+          $('#y').text(data.y-yfac);
+          $('#theta').text(data.theta-tfac);
+	        $('#distance').text(Math.pow(Math.pow(data.x-xfac, 2) + Math.pow(data.y-yfac, 2),0.5));
+
+         var trace = {//
+           x:data.x-xfac,
+           y:data.y-yfac,
+           theta:data.theta-tfac
+         };
+         
+
+         if (trace.x < minx) minx = trace.x;
+         if (trace.x > maxx) maxx = trace.x;
+         if (trace.y < miny) miny = trace.y;
+         if (trace.y > maxy) maxy = trace.y;
+
+         var newlayout = {
+           width: 500,
+           height: 500,
+           'xaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
+           'yaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
+         }
+         if (trace.x != prevx && trace.y != prevy) {
+          Plotly.extendTraces(myDiv,  { x: [[data.x-xfac]], y: [[data.y-yfac]] }, [0]);
+          Plotly.relayout('myDiv',newlayout);
+         }
+
+         prevx = trace.x;
+         prevy = trace.y;
+         prevt = trace.theta;
+        }
+
+        // Create server sent event connection to receive sensor data.
+        var server = new EventSource('/val');
+
+        // Add server sent event handlers.
+        server.onmessage = function(e) {
+          updateData(JSON.parse(e.data))
+        };
+        server.onopen = function(e) {
+          // Hide connecting status and show controls when connection is made.
+	        $('#connecting').hide();
+          $('#readout').show();
+        };
+        server.onerror = function(e) {
+          console.log(e)
+          // Hide controls and show connecting status if connection closes.
+          $('#readout').hide();
+          $('#connecting').show();
+        };
+
+
+      });
+
+      $('#reset').click(function() {
+        xfac+=prevx;
+        yfac+=prevy;
+        tfac+=prevt;
+        Plotly.deleteTraces('myDiv', 0);
+        createnew();
+
+        minx=-0.1; maxx=0.1; miny=-0.1; maxy=0.1;
+      });
+
+      </script>
+    </body>
+</html>
