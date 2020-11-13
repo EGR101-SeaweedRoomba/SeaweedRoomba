@@ -1,4 +1,4 @@
-
+#!/usr/bin/python3
 import json
 import threading
 import time
@@ -22,7 +22,7 @@ GPIO.setup(dt2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-interval=0.1
+interval=0.01
 
 x=0
 y=0
@@ -61,7 +61,7 @@ def aiB(channel):
 def calculate(vel1, vel2):
     global x, y, theta
 
-    deltat = 0.1
+    deltat = interval
 
     vl = (vel1+vel2)/2
     vr = (vel1-vel2)/wheelbase
@@ -124,8 +124,7 @@ def path():
 
 @app.route("/")
 def root():
-    return flask.render_template("index.html")
-
+    return flask.render_template("boogaloo.html")
 
 if __name__ == "__main__":
     # Create a server listening for external connections on the default
