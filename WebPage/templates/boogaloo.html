@@ -43,14 +43,119 @@
   
             var i = 0;
           setInterval(function() {
-            i = getData();
+            i = Math.floor(Math.random() * 360) + 1;
               line.setAttribute("transform", "rotate(" + i + ", 100, 100)");
             }, 25);
           </script>
         </div>
       </div>
       <div id="div3">
-        <script>createnew(); </script>
+        <script>
+          function createnew() {
+            var positions = {
+                x: [],
+                y: [],
+                type: 'scatter'
+              };
+            var layout = {
+              width: 500,
+              height: 500,
+              'xaxis.range': [-0.1, 0.1],
+              'yaxis.range': [-0.1, 0.1],
+            };
+    
+            thingtoplot= [positions]
+    
+            Plotly.newPlot('myDiv', thingtoplot, layout);
+    
+          }
+    
+          var minx = 0;
+          var maxx = 0;
+          var miny = 0;
+          var maxy = 0;
+    
+          prevx = 0;
+          prevy = 0;
+          prevt = 0;
+          
+          xfac=0;
+          yfac=0;
+          tfac=0;
+    
+          var myDiv = document.getElementById('myDiv')
+    
+          $(document).ready(function() {
+            // Function called when a new sensor reading is received.
+          
+            function updateData(data) {
+              //console.log(data.x);
+              $('#x').text(data.x-xfac);
+              $('#y').text(data.y-yfac);
+              $('#theta').text(data.theta-tfac);
+              $('#distance').text(Math.pow(Math.pow(data.x-xfac, 2) + Math.pow(data.y-yfac, 2),0.5));
+    
+            var trace = {//
+              x:data.x-xfac,
+              y:data.y-yfac,
+              theta:data.theta-tfac
+            };
+            
+    
+            if (trace.x < minx) minx = trace.x;
+            if (trace.x > maxx) maxx = trace.x;
+            if (trace.y < miny) miny = trace.y;
+            if (trace.y > maxy) maxy = trace.y;
+    
+            var newlayout = {
+              width: 500,
+              height: 500,
+              'xaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
+              'yaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
+            }
+            if (trace.x != prevx && trace.y != prevy) {
+              Plotly.extendTraces(myDiv,  { x: [[data.x-xfac]], y: [[data.y-yfac]] }, [0]);
+              Plotly.relayout('myDiv',newlayout);
+            }
+    
+            prevx = trace.x;
+            prevy = trace.y;
+            prevt = trace.theta;
+            }
+    
+            // Create server sent event connection to receive sensor data.
+            var server = new EventSource('/val');
+    
+            // Add server sent event handlers.
+            server.onmessage = function(e) {
+              updateData(JSON.parse(e.data))
+            };
+            server.onopen = function(e) {
+              // Hide connecting status and show controls when connection is made.
+              $('#connecting').hide();
+              $('#readout').show();
+            };
+            server.onerror = function(e) {
+              console.log(e)
+              // Hide controls and show connecting status if connection closes.
+              $('#readout').hide();
+              $('#connecting').show();
+            };
+    
+    
+          });
+    
+          $('#reset').click(function() {
+            xfac+=prevx;
+            yfac+=prevy;
+            tfac+=prevt;
+            Plotly.deleteTraces('myDiv', 0);
+            createnew();
+    
+            minx=-0.1; maxx=0.1; miny=-0.1; maxy=0.1;
+          });
+    
+        </script>
       </div>
       <div id="div4">
         <script>
@@ -61,118 +166,11 @@
       </div>
       <div id='myDiv'></div>
 
-      
+
       <script src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
       <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-      <script>
       
-      function createnew() {
-
-        var positions = {
-            x: [],
-            y: [],
-            type: 'scatter'
-          };
-        var layout = {
-          width: 500,
-          height: 500,
-          'xaxis.range': [-0.1, 0.1],
-          'yaxis.range': [-0.1, 0.1],
-        };
-
-        thingtoplot= [positions]
-
-        Plotly.newPlot('myDiv', thingtoplot, layout);
-
-      }
-
-      var minx = 0;
-      var maxx = 0;
-      var miny = 0;
-      var maxy = 0;
-
-      prevx = 0;
-      prevy = 0;
-      prevt = 0;
-      
-      xfac=0;
-      yfac=0;
-      tfac=0;
-
-      var myDiv = document.getElementById('myDiv')
-
-      $(document).ready(function() {
-        // Function called when a new sensor reading is received.
-      
-        function updateData(data) {
-          //console.log(data.x);
-          $('#x').text(data.x-xfac);
-          $('#y').text(data.y-yfac);
-          $('#theta').text(data.theta-tfac);
-	        $('#distance').text(Math.pow(Math.pow(data.x-xfac, 2) + Math.pow(data.y-yfac, 2),0.5));
-
-         var trace = {//
-           x:data.x-xfac,
-           y:data.y-yfac,
-           theta:data.theta-tfac
-         };
-         
-
-         if (trace.x < minx) minx = trace.x;
-         if (trace.x > maxx) maxx = trace.x;
-         if (trace.y < miny) miny = trace.y;
-         if (trace.y > maxy) maxy = trace.y;
-
-         var newlayout = {
-           width: 500,
-           height: 500,
-           'xaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
-           'yaxis.range': [Math.min(minx, miny), Math.max(maxx, maxy)],
-         }
-         if (trace.x != prevx && trace.y != prevy) {
-          Plotly.extendTraces(myDiv,  { x: [[data.x-xfac]], y: [[data.y-yfac]] }, [0]);
-          Plotly.relayout('myDiv',newlayout);
-         }
-
-         prevx = trace.x;
-         prevy = trace.y;
-         prevt = trace.theta;
-        }
-
-        // Create server sent event connection to receive sensor data.
-        var server = new EventSource('/val');
-
-        // Add server sent event handlers.
-        server.onmessage = function(e) {
-          updateData(JSON.parse(e.data))
-        };
-        server.onopen = function(e) {
-          // Hide connecting status and show controls when connection is made.
-	        $('#connecting').hide();
-          $('#readout').show();
-        };
-        server.onerror = function(e) {
-          console.log(e)
-          // Hide controls and show connecting status if connection closes.
-          $('#readout').hide();
-          $('#connecting').show();
-        };
-
-
-      });
-
-      $('#reset').click(function() {
-        xfac+=prevx;
-        yfac+=prevy;
-        tfac+=prevt;
-        Plotly.deleteTraces('myDiv', 0);
-        createnew();
-
-        minx=-0.1; maxx=0.1; miny=-0.1; maxy=0.1;
-      });
-
-      </script>
     </body>
 </html>
