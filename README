@@ -1,0 +1,31 @@
+~~ Roomba Positioning Program ~~
+
+This is a program designed to run on a raspberry pi computer, onboard a seafloor seaweed roomba. 
+With the raspberry pi connected to two rotary encoders, this system will allow a user to view the pi's path on the sea floor in a web browser.
+
+Setup instructions:
+
+- Install a headless Raspbian image onto any Raspberry Pi
+- Connected to the raspberry pi, install necessary python libraries listed at the beginning of WebPage/server.py:
+  import json
+  import threading
+  import time
+  import random
+  import RPi.GPIO as GPIO
+  import math
+  import flask
+  import board
+  import busio
+  import adafruit_bno055
+ 
+ - Set SeaweedRoomba/WebPage/server.py to run every time the roomba is restarted (e.g. by adding "python SeaweedRoomba/WebPage/server.py" to /etc/rc.local)
+ - Connect rotary encoders to the raspberry pi, using ports 27 and 4, and 26 and 6. 
+ - Connect rotary encoders to the wheels, noting the gear ratio. 
+  - I believe that msot optical square-wave style rotary encoders will work for this. example: https://www.amazon.com/Incremental-Optical-Rotary-Encoder-Collector/dp/B07SKJ1WXB
+ - Enter the wheel radius + gear ratio into server.py. 
+ 
+ --------
+ NOTES
+--------
+
+server-w-imu integrates an inertial measurement (incl. accelerometer, gyroscope, magnetometer) but has a tendency to accumulate error more than server.py.
