@@ -29,3 +29,5 @@ Setup instructions:
 --------
 
 server-w-imu integrates an inertial measurement (incl. accelerometer, gyroscope, magnetometer) but has a tendency to accumulate error more than server.py.
+
+![Setup Schematic](https://github.com/EGR101-SeaweedRoomba/SeaweedRoomba/blob/main/Roomba%20Navigation%20Setup%20(low%20res).png)
