@@ -1,4 +1,5 @@
 ~~ Roomba Positioning Program ~~
+https://www.youtube.com/watch?v=rB9gmJslB1U
 
 This is a program designed to run on a raspberry pi computer, onboard a seafloor seaweed roomba. 
 With the raspberry pi connected to two rotary encoders, this system will allow a user to view the pi's path on the sea floor in a web browser.
@@ -31,3 +32,4 @@ Setup instructions:
 server-w-imu integrates an inertial measurement (incl. accelerometer, gyroscope, magnetometer) but has a tendency to accumulate error more than server.py.
 
 ![Setup Schematic](https://github.com/EGR101-SeaweedRoomba/SeaweedRoomba/blob/main/Roomba%20Navigation%20Setup%20(low%20res).png)
+![Final Prototype](https://github.com/EGR101-SeaweedRoomba/SeaweedRoomba/blob/main/Prototype-Photo.jpg)
