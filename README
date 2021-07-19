@@ -7,22 +7,22 @@ Setup instructions:
 
 - Install a headless Raspbian image onto any Raspberry Pi
 - Connected to the raspberry pi, install necessary python libraries listed at the beginning of WebPage/server.py:
-  import json
-  import threading
-  import time
-  import random
-  import RPi.GPIO as GPIO
-  import math
-  import flask
-  import board
-  import busio
-  import adafruit_bno055
+
+  pip install Flask
+  
+  for IMU integration (unstable):
+  pip install Adafruit_BNO055
  
- - Set SeaweedRoomba/WebPage/server.py to run every time the roomba is restarted (e.g. by adding "python SeaweedRoomba/WebPage/server.py" to /etc/rc.local)
+ - Set SeaweedRoomba/WebPage/server.py to run every time the roomba is restarted 
+        (e.g. by adding "python SeaweedRoomba/WebPage/server.py" to /etc/rc.local)
  - Connect rotary encoders to the raspberry pi, using ports 27 and 4, and 26 and 6. 
  - Connect rotary encoders to the wheels, noting the gear ratio. 
-  - I believe that msot optical square-wave style rotary encoders will work for this. example: https://www.amazon.com/Incremental-Optical-Rotary-Encoder-Collector/dp/B07SKJ1WXB
+  - I believe that msot optical square-wave style rotary encoders will work for this. 
+        example: https://www.amazon.com/Incremental-Optical-Rotary-Encoder-Collector/dp/B07SKJ1WXB
  - Enter the wheel radius + gear ratio into server.py. 
+ - Once the code is running, connect the raspberry pi to any computer using an ethernet cable.
+    - to view the UI, type the IP address of the raspberry pi into any web browser on the connected computer 
+    (this ip address should be displayed on the raspberry pi when the code runs)
  
  --------
  NOTES
