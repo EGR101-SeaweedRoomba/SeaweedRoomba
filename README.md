@@ -18,7 +18,7 @@ Setup instructions:
         (e.g. by adding "python SeaweedRoomba/WebPage/server.py" to /etc/rc.local)
  - Connect rotary encoders to the raspberry pi, using ports 27 and 4, and 26 and 6. 
  - Connect rotary encoders to the wheels, noting the gear ratio. 
-  - I believe that msot optical square-wave style rotary encoders will work for this. 
+  - I believe that most optical square-wave style rotary encoders will work for this. 
         example: https://www.amazon.com/Incremental-Optical-Rotary-Encoder-Collector/dp/B07SKJ1WXB
  - Enter the wheel radius + gear ratio into server.py. 
  - Once the code is running, connect the raspberry pi to any computer using an ethernet cable.
